@@ -2,7 +2,7 @@
 name = "vertice-documentos"
 version = "0.1.0"
 description = "Ingestão generalista de documentos de engenharia — IA leitora, RT decisor"
-readme = ".md/VERTICE-arquitetura.md"
+readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi>=0.115",

@@ -31,7 +31,7 @@ As referências cruzadas entre os documentos pressupõem estas versões. Alterar
 | `VERTICE-entrega-cad.md` | 1.0 | Formato de projeto exigido do projetista |
 | `VERTICE-otimizacao-processo.md` | 0.1 | Tecnologia só entra com gargalo medido |
 
-Verificado por `VM-11`: `python tools/markdown_lint.py .md` reprova se algum documento estiver numa versão diferente da declarada aqui.
+Verificado por `VM-11`: `python tools/markdown_lint.py docs` reprova se algum documento estiver numa versão diferente da declarada aqui.
 
 ---
 
@@ -80,8 +80,8 @@ Documento de módulo que contraria uma ADR está errado, não a ADR. O caminho �
 | Tipos | `mypy --strict core/` | Passa |
 | Testes | `pytest tests/ -q` | Passa, 88 testes |
 | Domínio `VD-01`–`VD-14` | `python tools/domain_lint.py` | Passa |
-| Esquema `VD-15`–`VD-16` | `python tools/schema_lint.py --docs .md` | Passa |
-| Documentos `VM-01`–`VM-11` | `python tools/markdown_lint.py .md` | Passa |
+| Esquema `VD-15`–`VD-16` | `python tools/schema_lint.py --docs docs` | Passa |
+| Documentos `VM-01`–`VM-11` | `python tools/markdown_lint.py docs` | Passa |
 | Tipos do front-end | `npx vue-tsc --noEmit` | Passa |
 
 Módulos com código: `core/domain/` (`Origem`, `Quantia`, `calcular_markup` — a interface pública inteira de §3 já existe), `core/documents/`, `core/classification/`, `core/reference_base/` (adaptador SINAPI em `core/reference_base/adapters/sinapi/`), `core/packages/` (`carregar`/`validar`/`instalar` — §4.5), `core/pricing/` (BDI analítico — §4.4), `core/api/` (sidecar FastAPI — §4.3). Frontend mínimo em `src/` (Vue 3 + Vite). Os demais da tabela de `VERTICE-arquitetura.md` §3 existem apenas como especificação.
@@ -140,7 +140,7 @@ npm run dev                                                     # frontend em :5
 
 `VERTICE-modulo-precificacao.md` especifica um módulo inteiro: BDI (§3), administração local (§4), taxas (§5), resíduos (§6), cronograma (§7), curva ABC (§8), sensibilidade (§9). Construído agora: só o §3, com persistência.
 
-**Confirmado contra a planilha real.** `ENGEViTH_CME_SANTACASA_ABNT_SINAPI (1).xlsx` — a planilha auditada que `VERTICE-modulo-cpu.md` e `VERTICE-modulo-precificacao.md` citam como "modelo de referência" — está na pasta de trabalho. A aba `BDI` tem as nove parcelas célula a célula: AC 4,01%, SG 0,32%, R 0,50%, DF 1,02%, L 6,64%, PIS 0,65%, COFINS 3,00%, ISS 5,00% (base 100%, Cerqueira César), CPRB 0% — exatamente os valores já usados em `PARCELAS_CME` nos testes, não uma aproximação da tabela do documento. A aba `ORÇAMENTO FINAL` confirma no cabeçalho: **"BDI: 23,6245%"**, literal.
+**Confirmado contra a planilha real.** `data/examples/ENGEViTH_CME_SANTACASA_ABNT_SINAPI (1).xlsx` — a planilha auditada que `VERTICE-modulo-cpu.md` e `VERTICE-modulo-precificacao.md` citam como "modelo de referência" — está na pasta de dados. A aba `BDI` tem as nove parcelas célula a célula: AC 4,01%, SG 0,32%, R 0,50%, DF 1,02%, L 6,64%, PIS 0,65%, COFINS 3,00%, ISS 5,00% (base 100%, Cerqueira César), CPRB 0% — exatamente os valores já usados em `PARCELAS_CME` nos testes, não uma aproximação da tabela do documento. A aba `ORÇAMENTO FINAL` confirma no cabeçalho: **"BDI: 23,6245%"**, literal.
 
 | Peça | Onde | Verificado |
 |------|------|------------|
@@ -177,12 +177,12 @@ npm run dev                                                     # frontend em :5
 | Versão | Data | Mudança |
 |--------|------|---------|
 | 1.9 | 13/09/2026 | `core/pricing` ligado ao sidecar e ao frontend: rotas `POST /orcamento`, `GET /orcamento/{id}`, `POST /orcamento/{id}/bdi`, `GET /orcamento/{id}/bdi` (`core/api/routes/pricing.py`), pacote de domínio carregado em `app.state` no boot (`criar_app` agora chama `core.packages.installer.instalar`), e `src/features/pricing/PricingView.vue` no frontend. `id_origem` de registros criados pelo sidecar usa a raiz `USUARIO:sidecar#<instante>` — provisório, documentado como tal, até existir identidade de usuário real. 96 testes no total |
-| 1.8 | 13/09/2026 | `core/pricing/`: tabelas `orcamento`, `bdi`, `fonte` persistidas (schema.py, persistence.py), fechando a lacuna de BDI-sem-persistência de §4.4. Confirmado contra a planilha real `ENGEViTH_CME_SANTACASA_ABNT_SINAPI (1).xlsx` fornecida pelo usuário — as nove parcelas de BDI e o "BDI: 23,6245%" do cabeçalho batem exatamente com os valores já usados nos testes. 88 testes no total |
+| 1.8 | 13/09/2026 | `core/pricing/`: tabelas `orcamento`, `bdi`, `fonte` persistidas (schema.py, persistence.py), fechando a lacuna de BDI-sem-persistência de §4.4. Confirmado contra a planilha real `data/examples/ENGEViTH_CME_SANTACASA_ABNT_SINAPI (1).xlsx` fornecida pelo usuário — as nove parcelas de BDI e o "BDI: 23,6245%" do cabeçalho batem exatamente com os valores já usados nos testes. 88 testes no total |
 | 1.7 | 13/09/2026 | `core/packages/` completa `carregar`/`validar`/`instalar` (ADR-018/019) contra um manifesto real, `packages/civil-construction-br/package.yaml`. `core.pricing.bdi.calcular_bdi` deixa de hardcodar a fórmula — passa a exigi-la como argumento, sourced do pacote. Teste de integração prova que a fórmula lida do arquivo reproduz a âncora do CME. 81 testes no total |
 | 1.6 | 13/09/2026 | `core/pricing/bdi.py`: fórmula BDI analítico via `calcular_markup`, faixas do TCU, coerência de regime. P01 bate com a âncora do CME (23,6245%) de `VERTICE-REGRAS.md` §3.2. Escopo cortado deliberadamente do resto de `VERTICE-modulo-precificacao.md` — ver §4.4. 68 testes no total |
 | 1.5 | 13/09/2026 | `core/domain/` completa a interface pública documentada em `VERTICE-arquitetura.md` §3: `Origem` (id_origem validado no construtor, OrigemInvalida se fora da gramática), `Quantia` (centavo inteiro, `de_reais`/`de_centavos`/`para_reais`, aritmética exata) e `calcular_markup` (ADR-019 — avaliador de expressão aritmética por AST, não `eval()`, fórmula é dado do pacote). 22 testes novos, 63 no total |
 | 1.4 | 13/09/2026 | Primeira fatia do app: sidecar FastAPI (`core/api/`, token de sessão, os dois contratos de REGRAS §4.4) e frontend mínimo (`src/`, Vue 3 + Vite) verificados de ponta a ponta contra o `.db` real. Tauri fica para quando Rust/MSVC estiverem instalados — não muda a ADR-002 |
 | 1.3 | 13/09/2026 | `ISD` deixa de ser lido duas vezes (catálogo + preço onerado fundidos em `ler_insumos_onerados`). Importação real caiu de 199 s para 82 s, com ressalva de cache de disco aquecido entre as três medições da sessão |
-| 1.2 | 13/09/2026 | Documentos movidos para `.md/`. Comandos de `VM-11` e `VD-15`/`VD-16` atualizados para apontar para a nova pasta |
+| 1.2 | 13/09/2026 | Documentos organizados em `docs/`. Comandos de `VM-11` e `VD-15`/`VD-16` atualizados para apontar para a nova pasta |
 | 1.1 | 13/09/2026 | Rename retroativo de arquivos e pastas do código para inglês (`core/`, `tools/`, `tests/`, `reference_base/`). §4 atualizado com os caminhos novos e com os números reais de F0 medidos contra o pacote SINAPI 08/2026 fornecido — importação, busca, explosão e o gargalo de 199 s ainda acima da meta de 180 s |
 | 1.0 | 13/09/2026 | Índice inicial. Conjunto compatível declarado e verificado por `VM-11`. Tabela de dono único criada após varredura que mediu dez assuntos afirmados em mais de dois documentos |

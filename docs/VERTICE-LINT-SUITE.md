@@ -108,7 +108,7 @@ Os limites de `VD-09` a `VD-14` são **duros**, não sugestões. Agente de IA pr
 ```bash
 ruff check core/ --select C901 --config "lint.mccabe.max-complexity=10"
 python tools/domain_lint.py --max-linhas-arquivo 300 --max-linhas-funcao 40
-python tools/schema_lint.py --docs .md      # VD-15 e VD-16
+python tools/schema_lint.py --docs docs    # VD-15 e VD-16
 ```
 
 ---
@@ -165,7 +165,7 @@ Executado por `tools/markdown_lint.py`. Todas as verificações abaixo foram usa
 > `VM-08` nasceu de incidente real: nós com `fill` claro renderizavam texto branco no tema escuro, deixando o diagrama ilegível. A regra impede a reincidência.
 
 ```bash
-python tools/markdown_lint.py .md      # docs vivem em .md/
+python tools/markdown_lint.py docs     # documentação vive em docs/
 npx markdownlint-cli2 "docs/**/*.md"
 ```
 
@@ -323,7 +323,7 @@ Comparar o registro do estágio atual com o anterior é o que revela regressão 
 
 | Versão | Data | Alteração |
 |--------|------|-----------|
-| 1.8 | 13/09/2026 | Documentos `VERTICE-*.md` e `INDICE.md` movidos para `.md/` (feito pelo usuário). `tools/schema_lint.py` ganha `--docs` separado de `--raiz`, já que a pasta de código (`core/`) e a pasta de documentos deixaram de coincidir. Exemplos de comando atualizados |
+| 1.8 | 13/09/2026 | Documentos `VERTICE-*.md` e `INDICE.md` organizados em `docs/`. `tools/schema_lint.py` mantém `--docs` separado de `--raiz`, já que a pasta de código (`core/`) e a pasta de documentos não coincidem. Exemplos de comando atualizados |
 | 1.7 | 13/09/2026 | Caminhos dos comandos atualizados para o rename retroativo: `nucleo/`→`core/`, `ferramentas/`→`tools/` (com `lint_dominio.py`→`domain_lint.py`, `lint_esquema.py`→`schema_lint.py`, `lint_markdown.py`→`markdown_lint.py`), `testes/`→`tests/` |
 | 1.6 | 13/09/2026 | `VD-01` ganha isenção escopada a `reference_base/adapters/` — a fronteira que lê `.xlsx` precisa reconhecer o `float` nativo do formato para converter uma única vez, mesmo padrão de isenção diretorial já usado por `VD-05` |
 | 1.5 | 13/09/2026 | `VM-11` amarra o conjunto compatível do `INDICE.md`. Laço curto contínuo na §1.1, com critério de dez segundos. `VD-15` e `VD-16` implementados em `tools/schema_lint.py`. Mutação restrita a `domain/` e `pricing/` por custo |

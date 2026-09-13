@@ -48,12 +48,12 @@ def _analisar_argumentos() -> argparse.Namespace:
     """Lê a raiz do repositório e a pasta de documentos da linha de comando.
 
     Porquê separado: `core/` mora na raiz do repositório, mas os
-    documentos `VERTICE-*.md` foram movidos para `.md/` — uma única
+    documentos `VERTICE-*.md` ficam em `docs/` — uma única
     `--raiz` deixou de servir aos dois propósitos.
     """
     analisador = argparse.ArgumentParser(description="Lint de esquema VÉRTICE")
     analisador.add_argument("--raiz", default=".", help="onde fica core/")
-    analisador.add_argument("--docs", default=".md", help="onde ficam os VERTICE-*.md")
+    analisador.add_argument("--docs", default="docs", help="onde ficam os VERTICE-*.md")
     return analisador.parse_args()
 
 

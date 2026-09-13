@@ -3,7 +3,7 @@
 **Versão:** 0.4
 **Documento-pai:** `VERTICE-decisoes.md` — ADR-007
 **Relacionado:** `VERTICE-modulo-sinapi.md` (detecção do gatilho G3), `VERTICE-modulo-precificacao.md` (quadro de pendências), `VERTICE-agente-antagonista.md` (regras `A-CPU-01` a `A-CPU-07`)
-**Modelo de referência:** `ENGEViTH_CME_SANTACASA_ABNT_SINAPI.xlsx` — orçamento auditado da reforma do CME da Santa Casa de Cerqueira César
+**Modelo de referência:** `data/examples/ENGEViTH_CME_SANTACASA_ABNT_SINAPI (1).xlsx` — orçamento auditado da reforma do CME da Santa Casa de Cerqueira César
 
 ---
 
