@@ -1,0 +1,12 @@
+/* Porquê arquivo próprio, não CSS solto em cada componente: reset
+   mínimo compartilhado por toda tela, per VERTICE-arquitetura.md §6. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f8;
+  color: #1a1a1a;
+}

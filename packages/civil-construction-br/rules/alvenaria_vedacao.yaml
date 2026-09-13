@@ -1,0 +1,17 @@
+# Regra genérica de medição: alvenaria de vedação.
+# Porquê dado e não código: trocar critério de vão é editar linha,
+# e o critério vira fonte rastreável em auditoria.
+regra: alvenaria_vedacao
+descricao: Alvenaria de vedação em bloco, medida por área líquida
+servico_padrao: SINAPI/103358
+unidade: m2
+origem: [POLILINHA_PAREDE]
+expressao: comprimento * pe_direito
+deducoes:
+  - tipo: VAO_ESQUADRIA
+    criterio: area > 2.0
+servicos_derivados:
+  - {regra: chapisco_base, fator: 2.0}
+disciplina: vedacoes
+fonte: Criterio do escritorio, rev. 2026-09
+versao: 1.0.0

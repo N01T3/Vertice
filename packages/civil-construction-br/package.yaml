@@ -1,0 +1,39 @@
+# Pacote de domínio: construção civil brasileira.
+# Porquê YAML, nunca .py: VERTICE-plataforma.md §3.1 — pacote declara,
+# não executa. Este arquivo não pode conter código, só dado.
+
+dominio: civil-construction-br
+
+unidades: [m, m2, m3, kg, un, h, vb, mes, dia, t, l]
+
+classificacao:
+  padrao: ABNT-NBR-15965
+  eixos: [resultado, espaco]
+  # Ainda não existe — VERTICE-plataforma.md documenta a intenção,
+  # mas a taxonomia NBR 15965 em si não foi construída (INDICE.md §4.4).
+  # `validar()` acusa isto corretamente até o arquivo existir.
+  arquivo: classification/nbr15965.yaml
+
+bases_preco:
+  - adaptador: sinapi-xlsx
+    rotulo: SINAPI
+    oficial: true
+    regimes: [ONERADO, DESONERADO, SEM_ENCARGOS]
+    granularidade_geografica: UF
+
+regras_medicao: rules/*.yaml
+
+markup:
+  modelo: bdi-analitico-br
+  parcelas:
+    [administracao_central, seguro_garantia, risco, despesas_financeiras, lucro]
+  tributos_sobre_faturamento: [pis, cofins, iss, cprb]
+  # Mesma fórmula de VERTICE-modulo-precificacao.md §3 e da referência do TCU.
+  # As siglas (AC, SG, R...) são a notação da fórmula, não os nomes por
+  # extenso acima — core.pricing.bdi.ParcelasBdi.como_simbolos() traduz.
+  formula: "((1+AC+SG+R)*(1+DF)*(1+L))/(1-(PIS+COFINS+ISS+CPRB))-1"
+  referencias_externas: [tcu-acordao-2622-2013]
+
+custos_fora_do_markup:
+  - grupo: taxas_licencas
+    rotulo: Taxas, licenças e responsabilidade técnica

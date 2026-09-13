@@ -1,0 +1,13 @@
+# Regra genérica de medição: chapisco como preparo de base.
+# Porquê derivada da alvenaria: duas faces por padrão, sem redigitar conta.
+regra: chapisco_base
+descricao: Chapisco aplicado sobre alvenaria, duas faces
+servico_padrao: SINAPI/87879
+unidade: m2
+origem: [POLILINHA_PAREDE]
+expressao: area_alvenaria * 2.0
+deducoes: []
+servicos_derivados: []
+disciplina: revestimentos
+fonte: Criterio do escritorio, rev. 2026-09
+versao: 1.0.0
